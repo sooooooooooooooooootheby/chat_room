@@ -1,0 +1,18 @@
+* {
+    font-family: ComicShanns, PingFang;
+}
+
+body {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+@font-face {
+    font-family: ComicShanns;
+    src: url("@/assets/typeface/ComicShannsMonoNerdFont-Regular.otf");
+}
+
+@font-face {
+    font-family: PingFang;
+    src: url("@/assets/typeface/PingFang-l.otf");
+}
