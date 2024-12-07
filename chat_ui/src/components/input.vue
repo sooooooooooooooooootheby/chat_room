@@ -1,7 +1,12 @@
 <template>
-    <div class="input">
-        <span class="mode">{{ mode }}</span>
-        <input type="text" v-model="userInput" @keydown.enter="handleInput" ref="input" />
+    <div class="container">
+        <div class="tips" v-if="functionStore.message.content">
+            <p :class="functionStore.message.type">[{{ functionStore.message.type }}]: {{ functionStore.message.content }}</p>
+        </div>
+        <div :class="{ input, active: mode }">
+            <span class="mode">{{ mode }}</span>
+            <input type="text" v-model="userInput" @keydown.enter="handleInput" ref="input" />
+        </div>
     </div>
 </template>
 
@@ -9,10 +14,14 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useItemStore } from "@/stores/item";
+import { useFunctionStore } from "@/stores/function";
+import { useCommandStore } from "@/stores/command";
 
 const itemStore = useItemStore();
+const functionStore = useFunctionStore();
+const commandStore = useCommandStore();
 
-const input = ref(null);
+const input = ref();
 const userInput = ref(""); // 输入
 const mode = ref(null); // 当前模式
 const clickListenerAdded = ref(false); // 标记是否添加了 click 事件监听器
@@ -84,14 +93,22 @@ const handleInput = () => {
     }
 
     switch (true) {
-        case userInput.value.startsWith("/set"):
-            console.log("命中以 '/set' 开头的字符串: ", userInput.value);
-            break;
         case userInput.value === "/setting":
             router.push("/setting");
             break;
-        default:
+        case userInput.value.startsWith("/set"):
+            const key = userInput.value.split(" ")[1];
+            const value = userInput.value.split(" ")[2];
+            commandStore.set(key, value);
+            break;
+        case userInput.value === "/help":
+            router.push("/help");
+            break;
+        case userInput.value === "/chat":
             router.push("/");
+            break;
+        default:
+            functionStore.log("warn", "未知指令")
             break;
     }
     userInput.value = "";
@@ -104,21 +121,46 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.input {
-    width: 100vw;
+.container {
+    width: calc(100vw - 16px);
     position: fixed;
     bottom: 8px;
     left: 8px;
-    display: flex;
-    align-items: center;
 
-    input {
-        border: none;
-        outline: none;
-        padding: 6px;
-        font-size: 14px;
-        background-color: transparent;
-        color: #ffffff;
+    .tips {
+        width: 100%;
+
+        p {
+            margin: 0;
+        }
+        .error {
+            color: red;
+        }
+        .warn {
+            color: yellow;
+        }
+        .success {
+            color: green;
+        }
+    }
+    .input {
+        height: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 6px;
+            font-size: 14px;
+            background-color: transparent;
+            color: #ffffff;
+        }
+    }
+    .active {
+        height: auto;
     }
 }
 </style>
