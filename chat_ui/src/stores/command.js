@@ -9,7 +9,9 @@ const functionStore = useFunctionStore();
 */
 
 export const useCommandStore = defineStore("command", {
-    state: () => ({}),
+    state: () => ({
+        name: localStorage.getItem("name") || "",
+    }),
 
     actions: {
         set(key, value) {
@@ -20,6 +22,7 @@ export const useCommandStore = defineStore("command", {
                     try {
                         localStorage.setItem("name", value);
                         functionStore.log("success", "名字设置成功");
+                        this.name = value;
                     } catch (error) {
                         functionStore.log("error", error);
                     }

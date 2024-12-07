@@ -1,8 +1,14 @@
 <template>
     <div class="room">
-        <ul class="message">
-            <li v-for="(item, index) in state.chatMessages" :key="index">{{ item.type }}: {{ item.message }}</li>
-        </ul>
+        <div class="message">
+            <span v-for="(item, index) in state.chatMessages" :key="index">{{ item.name }}: {{ item.message }}</span>
+        </div>
+        <div class="user">
+            <ul>
+                <span>当前在线:</span>
+                <li v-for="(item, index) in state.usersOnline" :key="index">{{ item.name }}</li>
+            </ul>
+        </div>
     </div>
 </template>
 

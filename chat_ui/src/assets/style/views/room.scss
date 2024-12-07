@@ -1,10 +1,41 @@
 .room {
+    height: calc(100vh - 104px);
+    padding: 12px;
     padding-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
 
     .message {
-        padding: 0;
-        li {
+        min-width: 500px;
+        margin-right: 12px;
+        padding: 8px;
+        border: 1px solid #ffffff;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: scroll;
+        overflow-x: hidden;
+
+        span {
+            margin-bottom: 8px;
             list-style: none;
+            overflow-wrap: break-word;
         }
+    }
+    .user {
+        width: 300px;
+        padding: 8px;
+        border: 1px solid #ffffff;
+        flex-shrink: 0;
+        overflow-x: hidden;
+
+        ul {
+            li {
+                list-style: none;
+            }
+        }
+    }
+    > div::-webkit-scrollbar {
+        width: 10px;
     }
 }

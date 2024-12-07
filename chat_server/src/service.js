@@ -10,17 +10,31 @@ const io = new Server(port, {
     path: path,
 });
 
-io.on("connection", (socket) => {
-    // io.emit("chat message", {
-    //     type: "system",
-    //     message: `${socket.id} entered the chat!`,
-    // });
+const usersOnline = [];
 
-    socket.on("chat message", (msg) => {
+io.on("connection", (socket) => {
+    socket.on("init", (data) => {
+        usersOnline.push({
+            id: socket.id,
+            name: data.userName,
+        });
+        io.emit("usersOnline", usersOnline);
+    });
+
+    socket.on("chat message", (name, msg) => {
         io.emit("chat message", {
             type: "user",
+            name: name,
             message: msg,
         });
+    });
+
+    socket.on("disconnect", () => {
+        usersOnline.splice(
+            usersOnline.findIndex((user) => user.id === socket.id),
+            1
+        );
+        io.emit("usersOnline", usersOnline);
     });
 });
 

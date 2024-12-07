@@ -1,11 +1,12 @@
 <template>
     <div class="container">
+        <div :class="{ input, active: mode }">
+            <span class="mode">[{{ mode }}] </span>
+            <span class="name">{{ commandStore.name }}: </span>
+            <input type="text" v-model="userInput" @keydown.enter="handleInput" ref="input" />
+        </div>
         <div class="tips" v-if="functionStore.message.content">
             <p :class="functionStore.message.type">[{{ functionStore.message.type }}]: {{ functionStore.message.content }}</p>
-        </div>
-        <div :class="{ input, active: mode }">
-            <span class="mode">{{ mode }}</span>
-            <input type="text" v-model="userInput" @keydown.enter="handleInput" ref="input" />
         </div>
     </div>
 </template>
@@ -15,6 +16,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useFunctionStore } from "@/stores/function";
 import { useCommandStore } from "@/stores/command";
+import { sendMessage } from "@/socket";
 
 const functionStore = useFunctionStore();
 const commandStore = useCommandStore();
@@ -85,7 +87,7 @@ onBeforeUnmount(() => {
 // 处理回车
 const handleInput = () => {
     if (mode.value === "message") {
-        itemStore.sendMessage(userInput.value);
+        sendMessage(userInput.value);
         userInput.value = "";
         return;
     }
@@ -120,10 +122,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
-    width: calc(100vw - 16px);
+    width: calc(100vw - 42px);
+    min-height: 51px;
     position: fixed;
-    bottom: 8px;
-    left: 8px;
+    bottom: 12px;
+    left: 12px;
+    padding: 8px;
+    border: 1px solid #FFFFFF;
 
     .tips {
         width: 100%;
@@ -147,6 +152,9 @@ onMounted(() => {
         display: flex;
         align-items: center;
 
+        .name {
+            margin-left: 4px;
+        }
         input {
             width: 100%;
             border: none;
