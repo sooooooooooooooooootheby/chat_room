@@ -17,24 +17,6 @@
 
 <script setup>
 import inputc from "@/components/input.vue";
-
-const del = () => {
-    const deleteRequest = indexedDB.deleteDatabase("chat_room");
-
-    deleteRequest.onsuccess = function (event) {
-        console.log("Database deleted successfully");
-    };
-
-    deleteRequest.onerror = function (event) {
-        console.error("Error deleting database:", event.target.error);
-    };
-
-    deleteRequest.onblocked = function (event) {
-        console.warn("Database deletion is blocked");
-    };
-};
-
-// del();
 </script>
 
 <style lang="scss" scoped>

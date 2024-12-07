@@ -13,11 +13,9 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-import { useItemStore } from "@/stores/item";
 import { useFunctionStore } from "@/stores/function";
 import { useCommandStore } from "@/stores/command";
 
-const itemStore = useItemStore();
 const functionStore = useFunctionStore();
 const commandStore = useCommandStore();
 
