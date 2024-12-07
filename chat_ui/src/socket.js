@@ -22,7 +22,7 @@ export const connectSocket = () => {
         return;
     }
 
-    state.socket = io("http://localhost:8421", {
+    state.socket = io("https://api.sooooooooooooooooootheby.top", {
         path: "/chat_room/",
     });
 
