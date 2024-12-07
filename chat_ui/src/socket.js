@@ -47,7 +47,7 @@ export const connectSocket = () => {
     // 监听断开连接
     state.socket.on("disconnect", () => {
         state.connected = false;
-        functionStore.log("error", "服务器连接断开");
+        functionStore.log("error", "服务器连接断开", -1);
     });
 
     // 监听服务器消息
@@ -66,13 +66,13 @@ export const disconnectSocket = () => {
     const functionStore = useFunctionStore();
 
     if (!state.connected) {
-        functionStore.log("error", "服务器未连接");
+        functionStore.log("error", "服务器未连接", -1);
         return;
     }
 
     state.socket.disconnect();
     state.connected = false;
-    functionStore.log("error", "WebSocket 连接已断开");
+    functionStore.log("error", "服务器连接已断开", -1);
 };
 
 // 发送消息
@@ -82,6 +82,6 @@ export const sendMessage = (message) => {
     if (state.socket && state.connected && name) {
         state.socket.emit("chat message", name, message);
     } else {
-        functionStore.error("error", "Socket 未连接或已断开");
+        functionStore.error("error", "Socket 未连接或已断开", -1);
     }
 };

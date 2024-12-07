@@ -5,6 +5,7 @@
         </div>
         <div class="user">
             <ul>
+                <p>服务器状态: {{ state.connected }}</p>
                 <span>当前在线:</span>
                 <li v-for="(item, index) in state.usersOnline" :key="index">{{ item.name }}</li>
             </ul>
